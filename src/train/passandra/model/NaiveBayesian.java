@@ -7,34 +7,26 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import train.passandra.io.CreateTrainData;
-import train.passandra.io.FileObjectIO;
 import train.passandra.preprocessing.WordSelect;
 
 public class NaiveBayesian {
-	NaiveBayesianModel model;
-	String path;
+	private NaiveBayesianModel model;
 
-	public NaiveBayesian(String keyword, String modelSavePath) {
-		path = modelSavePath;
-
-		model = (NaiveBayesianModel) FileObjectIO.FileToObject(modelSavePath);
-
-		if (model == null) {
-			model = creatModel(keyword);
-			saveModel();
-		}
+	public NaiveBayesian(String keyword) {
+		model = creatModel(keyword);
 	}
 
 	/**
 	 *  
 	 */
 	public NaiveBayesianModel creatModel(String keyword) {
-		WordSelect ws = new WordSelect(CreateTrainData.getInstance().getContent(keyword), "StopWordList.data");
+		WordSelect ws = new WordSelect(CreateTrainData.getInstance()
+				.getContent(keyword), "StopWordList.data");
 
-		// 단어 리스트로 변환
+		// �떒�뼱 由ъ뒪�듃濡� 蹂��솚
 		ArrayList<String> keywordList = ws.getSelectedWord();
 
-		// <단어,갯수> 형태의 해쉬맵 각 단어가 몇개 포함됬는지...
+		// <�떒�뼱,媛��닔> �삎�깭�쓽 �빐�돩留� 媛� �떒�뼱媛� 紐뉕컻 �룷�븿�맟�뒗吏�...
 		HashMap<String, Integer> wordMap = new HashMap<String, Integer>();
 
 		for (int i = 0; i < keywordList.size(); i++) {
@@ -46,29 +38,30 @@ public class NaiveBayesian {
 			} catch (Exception e) {
 				wordMap.put(word, 1);
 			}
-			//			System.out.println(word);
+			// System.out.println(word);
 		}
 
 		return new NaiveBayesianModel(wordMap);
 
 	}
 
-	public void saveModel() {
-		FileObjectIO.ObjectToFile(path, model);
-	}
-
+	/**
+	 * @param keyword
+	 * @return correlation
+	 */
 	public int getCorrelation(String keyword) {
-		//		model.print();
+		// model.print();
 
 		int searchPoint = compareModel(keyword);
 		int modelPoint = model.getTotalWordSize();
 
-		System.out.println("searchPoint : " + searchPoint + ", modelPoint : " + modelPoint);
-		//		return compareModel(keyword)*100/model.getTotalWordSize();
+		System.out.println("searchPoint : " + searchPoint + ", modelPoint : "
+				+ modelPoint);
+		// return compareModel(keyword)*100/model.getTotalWordSize();
 		return searchPoint * 100 / modelPoint;
 	}
 
-	public int compareModel(String keyword) {
+	private int compareModel(String keyword) {
 		HashMap<String, Integer> modelMap = model.getWordMap();
 		HashMap<String, Integer> searchMap = creatModel(keyword).getWordMap();
 
