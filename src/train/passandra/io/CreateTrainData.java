@@ -11,8 +11,8 @@ import org.jsoup.select.Elements;
 public class CreateTrainData {
 	private static CreateTrainData instance;
 
-	private String wikiEngUri, wikiKorUri;
-	private String regexTag, regexBraket, regexEng;
+	private String wikiEngUri;
+	private String regexTag, regexBraket, regexEng; // 불필요한 내용 제거하는 정규표현식
 
 	public static synchronized CreateTrainData getInstance() {
 		if (instance == null) {
@@ -23,7 +23,6 @@ public class CreateTrainData {
 
 	private CreateTrainData() {
 		this.wikiEngUri = "https://en.wikipedia.org/?title=";
-		this.wikiKorUri = "https://ko.wikipedia.org/wiki/";
 		this.regexTag = "<[^>]*>"; // html tag 제거
 		this.regexBraket = "[\\[\\d\\]]"; // [%d] 제거
 		this.regexEng = "[^\\x00-\\x7F]"; // 영어 이외에 문자 제거
@@ -68,11 +67,10 @@ public class CreateTrainData {
 	 */
 	public String getContent(String search) {
 		try {
-			String uri = wikiKorUri;
-			if (checkStringType(search)) {
-				uri = wikiEngUri;
+			if (!checkStringType(search)) {
+				return "";
 			}
-			Document doc = Jsoup.connect(uri + search).userAgent("Mozilla/5.0").get();
+			Document doc = Jsoup.connect(wikiEngUri + search).userAgent("Mozilla/5.0").get();
 			Elements selectByTag = doc.select("li"); // li 태그 내용 선택
 
 			String content = selectByTag.html(); // 해당 태그 제거
