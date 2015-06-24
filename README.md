@@ -7,10 +7,10 @@ OCR 라이브러리와 함께 쓰면 자동으로 문서의 단어를 인식하�
  
 ### Language
 
-Java (JDK 1.6 이상)
+Java (JDK 1.5 이상)
 
 ### Participants
-[Saehyun Kim](https://github.com/saehyun/)  
-[Sungjin Lee](https://github.com/qchonjae)  
-[Myeongjun Kim](https://github.com/kimmyeongjun)  
-[Byeongcheol Park](https://github.com/gkr2410)  
+[Saehyun Kim](https://github.com/saehyun/):  
+[Sungjin Lee](https://github.com/qchonjae): 
+[Myeongjun Kim](https://github.com/kimmyeongjun):   
+[Byeongcheol Park](https://github.com/gkr2410): 

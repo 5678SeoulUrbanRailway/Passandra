@@ -6,11 +6,7 @@ import train.passandra.model.NaiveBayesian;
 
 public class PassandraTest {
 	public static void main(String[] args) {
-<<<<<<< HEAD
-		NaiveBayesian test = new NaiveBayesian("man", "C:\\Passandra\\navie.model");
-=======
 		NaiveBayesian test = new NaiveBayesian("man");
->>>>>>> origin/PBC
 
 		System.out.println("Correlation : " + test.getCorrelation("woman"));
 		System.out.println("Correlation : " + test.getCorrelation("rain"));
