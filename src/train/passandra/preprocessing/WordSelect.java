@@ -9,13 +9,13 @@ import java.util.Iterator;
 
 public class WordSelect {
     private ArrayList<String> words, exceptKeyword;
-    private String inputString, stopwordsPath;
+    private String inputString, stopWordsPath;
     
-    public WordSelect(String inputString, String stopwordsPath) {
+    public WordSelect(String inputString, String stopWordsPath) {
         this.words = new ArrayList<String>();
         this.exceptKeyword = new ArrayList<String>();
         this.inputString = inputString;
-        this.stopwordsPath = stopwordsPath;
+        this.stopWordsPath = stopWordsPath;
         readStopWordList();
         selectOCRString();
     }
@@ -25,7 +25,7 @@ public class WordSelect {
      */
     private void readStopWordList() {
         try {
-            BufferedReader in = new BufferedReader(new FileReader(stopwordsPath));
+            BufferedReader in = new BufferedReader(new FileReader(stopWordsPath));
             
             String inBuf = "";
             while ((inBuf = in.readLine()) != null) {
