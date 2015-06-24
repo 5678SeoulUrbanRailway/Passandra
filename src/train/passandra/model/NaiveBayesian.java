@@ -20,8 +20,7 @@ public class NaiveBayesian {
 	 *  
 	 */
 	public NaiveBayesianModel creatModel(String keyword) {
-		WordSelect ws = new WordSelect(CreateTrainData.getInstance()
-				.getContent(keyword), "StopWordList.data");
+		WordSelect ws = new WordSelect(CreateTrainData.getInstance().getContentByWiki(keyword), "StopWordList.data");
 
 		// �떒�뼱 由ъ뒪�듃濡� 蹂��솚
 		ArrayList<String> keywordList = ws.getSelectedWord();
@@ -55,8 +54,7 @@ public class NaiveBayesian {
 		int searchPoint = compareModel(keyword);
 		int modelPoint = model.getTotalWordSize();
 
-		System.out.println("searchPoint : " + searchPoint + ", modelPoint : "
-				+ modelPoint);
+		System.out.println("searchPoint : " + searchPoint + ", modelPoint : " + modelPoint);
 		// return compareModel(keyword)*100/model.getTotalWordSize();
 		return searchPoint * 100 / modelPoint;
 	}

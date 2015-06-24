@@ -12,6 +12,7 @@ public class CreateTrainData {
 	private static CreateTrainData instance;
 
 	private String wikiEngUri;
+	private String dictDotComUri;
 	private String regexTag, regexBraket, regexEng; // 불필요한 내용 제거하는 정규표현식
 
 	public static synchronized CreateTrainData getInstance() {
@@ -23,6 +24,7 @@ public class CreateTrainData {
 
 	private CreateTrainData() {
 		this.wikiEngUri = "https://en.wikipedia.org/?title=";
+		this.dictDotComUri = "http://dictionary.reference.com/browse/";
 		this.regexTag = "<[^>]*>"; // html tag 제거
 		this.regexBraket = "[\\[\\d\\]]"; // [%d] 제거
 		this.regexEng = "[^\\x00-\\x7F]"; // 영어 이외에 문자 제거
@@ -61,11 +63,11 @@ public class CreateTrainData {
 	}
 
 	/**
-	 * 웹 사이트에서 search에 대한 내용을 파싱하여 String형태로 반환한다.
+	 * wiki에서 search에 대한 내용을 파싱하여 String형태로 반환한다.
 	 * @param 검색할 내용
 	 * @return search의 대한 검색 결과
 	 */
-	public String getContent(String search) {
+	public String getContentByWiki(String search) {
 		try {
 			if (!checkStringType(search)) {
 				return "";
@@ -76,6 +78,28 @@ public class CreateTrainData {
 			String content = selectByTag.html(); // 해당 태그 제거
 			content = acceptRegex(content); // 정규식 적용
 
+			return content;
+		} catch (IOException e) {
+			return "";
+		}
+	}
+	
+	/**
+	 * Dictionary.com 에서 search에 대한 내용을 파싱하여 String형태로 반환한다.
+	 * @param 검색할 내용
+	 * @return search의 대한 검색 결과
+	 */
+	public String getContentByDictDotCom(String search) {
+		try {
+			if (!checkStringType(search)) {
+				return "";
+			}
+			Document doc = Jsoup.connect(dictDotComUri + search).userAgent("Mozilla/5.0").get();
+			Elements selectByTag = doc.select("div.def-content"); 
+			
+			String content = selectByTag.html(); // 해당 태그 제거
+			
+			content = acceptRegex(content); // 정규식 적용
 			return content;
 		} catch (IOException e) {
 			return "";
