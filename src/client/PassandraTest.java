@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import train.passandra.model.NaiveBayesian;
 
-public class main {
-	public static void main(String args[]) {
+public class PassandraTest {
+	public static void main(String[] args) {
 		NaiveBayesian test = new NaiveBayesian("man", "C:/Users/PBC/Desktop/naive.model");
 
 		System.out.println("Correlation : " + test.getCorrelation("woman"));
