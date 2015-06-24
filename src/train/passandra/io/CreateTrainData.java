@@ -7,29 +7,27 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-public class CreateTrainDataContent {
-	private static CreateTrainDataContent instance;
+public class CreateTrainData {
+	private static CreateTrainData instance;
+	
 	private String wikiUri;
-	private String regexTag; // html tag 제거
-	private String regexBraket; // [%d] 제거
-	private String regexEng; // 영어 이외에 문자 제거
+	private String regexTag, regexBraket, regexEng;
 
-	public static synchronized CreateTrainDataContent getInstance() {
+	public static synchronized CreateTrainData getInstance() {
 		if (instance == null) {
-			instance = new CreateTrainDataContent();
+			instance = new CreateTrainData();
 		}
-
 		return instance;
 	}
 
-	private CreateTrainDataContent() {
+	private CreateTrainData() {
 		this.wikiUri = "https://en.wikipedia.org/?title=";
-		this.regexTag = "<[^>]*>";
-		this.regexBraket = "[\\[\\d\\]]";
-		this.regexEng = "[^\\x00-\\x7F]";
+		this.regexTag = "<[^>]*>"; // html tag 제거
+		this.regexBraket = "[\\[\\d\\]]"; // [%d] 제거
+		this.regexEng = "[^\\x00-\\x7F]"; // 영어 이외에 문자 제거
 	}
 
-	private String removeRex(String target) {
+	private String acceptRegex(String target) {
 		Pattern pattern = Pattern.compile(regexTag);
 		Matcher mat = pattern.matcher("");
 		mat.reset(target);
@@ -47,13 +45,18 @@ public class CreateTrainDataContent {
 		return target;
 	}
 
-	public String get(String search) {
+	/**
+	 * 웹 사이트에서 search에 대한 내용을 파싱하여 String형태로 반환한다.
+	 * @param 검색할 내용
+	 * @return search의 대한 검색 결과
+	 */
+	public String getContent(String search) {
 		try {
 			Document doc = Jsoup.connect(wikiUri + search).userAgent("Mozilla/5.0").get();
 			Elements selectByTag = doc.select("li"); // li 태그 내용 선택
 
 			String content = selectByTag.html(); // 해당 태그 제거
-			content = removeRex(content); // 정규식 적용
+			content = acceptRegex(content); // 정규식 적용
 
 			return content;
 		} catch (IOException e) {

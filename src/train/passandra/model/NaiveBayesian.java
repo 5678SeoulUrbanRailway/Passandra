@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import train.passandra.io.CreateTrainDataContent;
+import train.passandra.io.CreateTrainData;
 import train.passandra.io.FileObjectIO;
 import train.passandra.preprocessing.WordSelect;
 
@@ -23,15 +23,13 @@ public class NaiveBayesian {
 			model = creatModel(keyword);
 			saveModel();
 		}
-
 	}
 
 	/**
 	 *  
 	 */
 	public NaiveBayesianModel creatModel(String keyword) {
-
-		WordSelect ws = new WordSelect(CreateTrainDataContent.getInstance().get(keyword), "StopWordList.data");
+		WordSelect ws = new WordSelect(CreateTrainData.getInstance().getContent(keyword), "StopWordList.data");
 
 		// 단어 리스트로 변환
 		ArrayList<String> keywordList = ws.getSelectedWord();
